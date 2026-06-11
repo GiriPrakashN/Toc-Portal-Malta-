@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "pix-executive-portal-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pixExecutivePortal/PixExecutivePortalWebPart.js",
+          "manifest": "./src/webparts/pixExecutivePortal/PixExecutivePortalWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PixExecutivePortalWebPartStrings": "lib/webparts/pixExecutivePortal/loc/{locale}.js"
+  }
+}

@@ -1,0 +1,126 @@
+/* =========================================================
+   GLOBAL BASE RENDERING
+   ========================================================= */
+
+html,
+body {
+
+  margin: 0;
+  padding: 0;
+
+  background:
+    var(--pix-page-bg);
+
+  color:
+    var(--pix-text-primary);
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+}
+
+/* =========================================================
+   ROOT APP
+   ========================================================= */
+
+#workbenchPageContent,
+.CanvasComponent,
+.CanvasZone,
+.ControlZone {
+
+  background:
+    transparent !important;
+}
+
+/* =========================================================
+   UNIVERSAL
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+
+  box-sizing:
+    border-box;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+
+  color:
+    inherit;
+
+  text-decoration:
+    none;
+}
+
+/* =========================================================
+   IMAGES
+   ========================================================= */
+
+img {
+
+  display:
+    block;
+
+  max-width:
+    100%;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+
+  font:
+    inherit;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+table {
+
+  width:
+    100%;
+
+  border-collapse:
+    collapse;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+
+  width:
+    10px;
+}
+
+::-webkit-scrollbar-track {
+
+  background:
+    #d8d4ce;
+}
+
+::-webkit-scrollbar-thumb {
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(15,23,42,0.20);
+}

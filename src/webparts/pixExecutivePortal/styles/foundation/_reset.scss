@@ -1,0 +1,74 @@
+/* =========================================================
+   SHAREPOINT SAFE RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+#spPageCanvasContent,
+.CanvasComponent,
+.CanvasZone,
+.CanvasSection,
+.CanvasSection-col,
+.ControlZone,
+.spAppAndPropertyPanelContainer,
+#workbenchPageContent,
+#workbenchPageContent > div {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+
+  background:
+    var(--pix-bg-primary);
+
+  color:
+    var(--pix-text-primary);
+
+  font-family:
+    "Inter",
+    "Segoe UI",
+    sans-serif;
+}
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* =========================================================
+   SHAREPOINT FIXES
+   ========================================================= */
+
+.CanvasComponent.LCS .CanvasZone {
+  max-width: 100% !important;
+}
+
+.CanvasSection {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.CanvasSection-col {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

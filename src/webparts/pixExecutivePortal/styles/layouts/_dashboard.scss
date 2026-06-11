@@ -1,0 +1,179 @@
+/* =========================================================
+   EXECUTIVE DASHBOARD SURFACE
+   ========================================================= */
+
+.pix-dashboard-shell {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  width:
+    100%;
+
+  padding:
+    26px 26px 38px;
+
+  border-radius:
+    20px 20px 0 0;
+
+  background:
+    var(--pix-dashboard-bg);
+
+  box-shadow:
+    var(--pix-shadow-dashboard);
+}
+
+/* =========================================================
+   TOP EXECUTIVE GRADIENT
+   ========================================================= */
+
+.pix-dashboard-shell::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  height:
+    4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2ed8ff 0%,
+      #cfff4d 45%,
+      #ffcc4d 72%,
+      #ff6b5d 100%
+    );
+}
+
+/* =========================================================
+   DASHBOARD FLOW
+   ========================================================= */
+
+.pix-dashboard-shell__content {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    34px;
+}
+
+/* =========================================================
+   EXECUTIVE GRID
+   ========================================================= */
+
+.pix-dashboard-shell__grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1.6fr)
+    minmax(320px, 0.78fr);
+
+  gap:
+    22px;
+
+  align-items:
+    start;
+}
+
+/* =========================================================
+   LEFT COLUMN
+   ========================================================= */
+
+.pix-dashboard-shell__main {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    28px;
+
+  min-width:
+    0;
+}
+
+/* =========================================================
+   RIGHT COLUMN
+   ========================================================= */
+
+.pix-dashboard-shell__rail {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    28px;
+
+  min-width:
+    0;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1280px) {
+
+  .pix-dashboard-shell {
+
+    padding:
+      28px 24px 40px;
+  }
+
+  .pix-dashboard-shell__grid {
+
+    grid-template-columns:
+      1fr;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .pix-dashboard-shell {
+
+    padding:
+      22px 18px 34px;
+
+    border-radius:
+      24px 24px 0 0;
+  }
+
+  .pix-dashboard-shell__content {
+
+    gap:
+      24px;
+  }
+
+  .pix-dashboard-shell__main,
+  .pix-dashboard-shell__rail {
+
+    gap:
+      24px;
+  }
+}

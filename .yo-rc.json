@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "18.17.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.24.0"
+    },
+    "version": "1.20.0",
+    "libraryName": "pix-spfx-portal",
+    "libraryId": "9481a7c8-d2e1-41b4-bc85-360d0a12632c",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "\tpix-spfx-portal",
+    "solutionShortDescription": "\tpix-spfx-portal description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

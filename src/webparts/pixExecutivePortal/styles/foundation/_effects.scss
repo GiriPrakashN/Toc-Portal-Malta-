@@ -1,0 +1,51 @@
+/* =========================================================
+   EXECUTIVE EFFECTS
+   ========================================================= */
+
+.pix-gradient-border {
+  position: relative;
+}
+
+.pix-gradient-border::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  padding: 1px;
+
+  border-radius: inherit;
+
+  background:
+    var(--pix-gradient-primary);
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   GLASS PANEL
+   ========================================================= */
+
+.pix-glass-panel {
+  background:
+    var(--pix-surface-primary);
+
+  backdrop-filter:
+    blur(18px);
+
+  border:
+    1px solid var(--pix-border-soft);
+
+  box-shadow:
+    var(--pix-shadow-panel);
+
+  border-radius:
+    var(--pix-radius-lg);
+}

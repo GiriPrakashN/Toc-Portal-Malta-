@@ -1,0 +1,135 @@
+
+/* ======================================================
+   EXECUTIVE STATS
+====================================================== */
+
+
+.pix-stat-card:hover {
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    0 10px 28px rgba(15,23,42,.10);
+}
+
+.pix-stat-card__top {
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 5px;
+}
+
+.pix-stat-card__top--cyan {
+
+  background:
+    linear-gradient(
+      90deg,
+      #34d9ff,
+      #49b3ff
+    );
+}
+
+.pix-stat-card__top--lime {
+
+  background:
+    linear-gradient(
+      90deg,
+      #b8f531,
+      #d8ff55
+    );
+}
+
+.pix-stat-card__top--amber {
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffd84d,
+      #ff9f2f
+    );
+}
+
+.pix-stat-card__top--red {
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff7373,
+      #ff4b4b
+    );
+}
+
+.pix-stat-card__icon {
+
+  font-size: 22px;
+
+  margin-bottom: 14px;
+}
+
+.pix-stat-card__title {
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: .18em;
+
+  color: #737373;
+
+  margin-bottom: 10px;
+}
+
+.pix-stat-card__value {
+
+  font-size: 30px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  color: #09090b;
+
+  margin-bottom: 12px;
+}
+
+.pix-stat-card__subtitle {
+
+  font-size: 14px;
+
+  color: #666666;
+
+  line-height: 1.5;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 1200px) {
+
+  .pix-executive-stats {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+
+  .pix-dashboard-surface {
+
+    padding: 24px 18px 34px;
+
+    border-radius: 24px 24px 0 0;
+  }
+
+  .pix-executive-stats {
+
+    grid-template-columns: 1fr;
+  }
+}

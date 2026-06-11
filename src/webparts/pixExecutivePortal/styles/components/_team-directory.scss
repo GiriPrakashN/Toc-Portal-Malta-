@@ -1,0 +1,520 @@
+/* =========================================================
+   TEAM DIRECTORY
+   ========================================================= */
+
+.pix-team-directory {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    14px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.pix-team-directory__header {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+}
+
+/* =========================================================
+   TITLE GROUP
+   ========================================================= */
+
+.pix-team-directory__title-group {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+}
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.pix-team-directory__title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  color:
+    #111111;
+
+  font-size:
+    14px;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+}
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.pix-team-directory__icon {
+
+  font-size:
+    12px;
+}
+
+/* =========================================================
+   LIVE PILL
+   ========================================================= */
+
+.pix-team-directory__live-pill {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  height:
+    24px;
+
+  padding:
+    0 12px;
+
+  border-radius:
+    999px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.12em;
+
+  text-transform:
+    uppercase;
+}
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.pix-team-directory__cta {
+
+  border:
+    none;
+
+  background:
+    transparent;
+
+  color:
+    #ff5b5b;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.pix-team-directory__grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap:
+    16px;
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.pix-team-card {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  min-height:
+    198px;
+
+  padding:
+    14px 16px 14px;
+
+  border-radius:
+    14px;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid rgba(15,23,42,0.05);
+}
+
+/* =========================================================
+   TOP STRIP
+   ========================================================= */
+
+.pix-team-card::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  height:
+    4px;
+}
+
+/* =========================================================
+   ACCENTS
+   ========================================================= */
+
+.pix-team-card--cyan::before {
+
+  background:
+    linear-gradient(
+      90deg,
+      #2ed8ff,
+      #5f8dff
+    );
+}
+
+.pix-team-card--lime::before {
+
+  background:
+    linear-gradient(
+      90deg,
+      #b8f531,
+      #78df45
+    );
+}
+
+.pix-team-card--amber::before {
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffd84d,
+      #ffb036
+    );
+}
+
+.pix-team-card--red::before {
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff7373,
+      #ff5b5b
+    );
+}
+
+/* =========================================================
+   CODE
+   ========================================================= */
+
+.pix-team-card__code {
+
+  color:
+    #111111;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+}
+
+/* =========================================================
+   CITY
+   ========================================================= */
+
+.pix-team-card__city {
+
+  margin-top:
+    10px;
+
+  color:
+    #09090b;
+
+  font-size:
+    16px;
+
+  line-height:
+    1.2;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+}
+
+/* =========================================================
+   LOCATION
+   ========================================================= */
+
+.pix-team-card__location {
+
+  margin-top:
+    6px;
+
+  color:
+    #666666;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.45;
+}
+
+/* =========================================================
+   CLOCK
+   ========================================================= */
+
+.pix-team-card__clock {
+
+  margin-top:
+    18px;
+
+  color:
+    #111111;
+
+  font-size:
+    22px;
+
+  line-height:
+    1;
+
+  font-weight:
+    900;
+}
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.pix-team-card__date {
+
+  margin-top:
+    8px;
+
+  color:
+    #666666;
+
+  font-size:
+    11px;
+}
+
+/* =========================================================
+   MEMBERS
+   ========================================================= */
+
+.pix-team-card__members {
+
+  margin-top:
+    14px;
+
+  padding-top:
+    12px;
+
+  border-top:
+    1px solid rgba(15,23,42,0.06);
+
+  color:
+    #555555;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.5;
+}
+
+.pix-team-card__members strong {
+
+  color:
+    #111111;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1280px) {
+
+  .pix-team-directory__grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+
+  .pix-team-directory__grid {
+
+    grid-template-columns:
+      1fr;
+  }
+}
+
+/* =========================================================
+   TEAM MODAL GRID
+========================================================= */
+
+.pix-team-modal-grid {
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 32px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(320px, 1fr)
+    );
+
+  gap: 24px;
+}
+
+/* =========================================================
+   TEAM MODAL CARD
+========================================================= */
+
+.pix-team-modal-card__top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.pix-team-modal-card__icon {
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 12px;
+
+  background: rgba(255,255,255,0.08);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+.pix-team-modal-members {
+  margin-top: 28px;
+}
+
+.pix-team-modal-members__title {
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  color: #888888;
+
+  margin-bottom: 14px;
+}
+
+.pix-team-modal-members__list {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.pix-team-modal-member {
+  height: 36px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  background: #f2f1ee;
+
+  display: flex;
+
+  align-items: center;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #222222;
+}

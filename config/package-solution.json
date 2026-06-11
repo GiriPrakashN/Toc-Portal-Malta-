@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "pix-spfx-portal-client-side-solution",
+    "id": "9481a7c8-d2e1-41b4-bc85-360d0a12632c",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.20.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "\tpix-spfx-portal description"
+      },
+      "longDescription": {
+        "default": "\tpix-spfx-portal description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "pix-spfx-portal Feature",
+        "description": "The feature that activates elements of the pix-spfx-portal solution.",
+        "id": "a0c157f4-47a3-4e67-9309-b6c65e60a940",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/pix-spfx-portal.sppkg"
+  }
+}

@@ -1,0 +1,145 @@
+/* =========================================================
+   PIX EXECUTIVE PORTAL SHELL
+   ========================================================= */
+
+.pix-app-shell {
+
+  width:
+    100%;
+
+  background:
+    var(--pix-page-bg);
+}
+
+/* =========================================================
+   MAIN PAGE CONTAINER
+   ========================================================= */
+
+.pix-shell-container {
+
+  width:
+    100%;
+
+  max-width:
+    var(--pix-dashboard-max-width);
+
+  margin:
+    0 auto;
+
+  padding:
+    0 20px 48px;
+}
+
+/* =========================================================
+   HERO WRAPPER
+   ========================================================= */
+
+.pix-shell-hero {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+}
+
+/* =========================================================
+   DASHBOARD WRAPPER
+   ========================================================= */
+
+.pix-shell-dashboard {
+
+  position:
+    relative;
+
+  margin-top:
+    -16px;
+
+  z-index:
+    5;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .pix-shell-container {
+
+    padding:
+      0 18px 42px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .pix-shell-container {
+
+    padding:
+      0 14px 32px;
+  }
+
+  .pix-shell-dashboard {
+
+    margin-top:
+      -18px;
+  }
+}
+
+/* =========================================================
+   SHAREPOINT FULL WIDTH OVERRIDES
+   ========================================================= */
+
+#workbenchPageContent,
+.CanvasComponent.LCS .CanvasZone {
+
+  max-width:
+    100% !important;
+
+  width:
+    100% !important;
+}
+
+/* =========================================================
+   MODERN PAGE WIDTH
+   ========================================================= */
+
+.CanvasZone,
+.CanvasSection {
+
+  max-width:
+    100% !important;
+}
+
+/* =========================================================
+   SPFX WEBPART ROOT
+   ========================================================= */
+
+.ControlZone,
+.CanvasControl {
+
+  width:
+    100% !important;
+
+  max-width:
+    100% !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    0 !important;
+}
+
+/* =========================================================
+   REMOVE INNER CONSTRAINTS
+   ========================================================= */
+
+.spAppAndPropertyPanelContainer,
+.mainContent,
+.CanvasZoneContainer {
+
+  max-width:
+    100% !important;
+}

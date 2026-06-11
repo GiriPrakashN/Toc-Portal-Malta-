@@ -1,0 +1,86 @@
+/* =========================================================
+   ENTERPRISE SPFx ROOT RESET
+   ========================================================= */
+
+html,
+body,
+#root,
+#spPageCanvasContent,
+.CanvasComponent,
+.CanvasZone,
+.CanvasSection,
+.CanvasSection-col,
+.ControlZone,
+.spAppAndPropertyPanelContainer,
+#workbenchPageContent,
+#workbenchPageContent > div {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   BODY RESET
+   ========================================================= */
+
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+  background: #050816;
+}
+
+/* =========================================================
+   SPFx ROOT
+   ========================================================= */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* =========================================================
+   SHAREPOINT CANVAS FIX
+   ========================================================= */
+
+.CanvasComponent.LCS .CanvasZone {
+  max-width: 100% !important;
+}
+
+.CanvasSection {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.CanvasSection-col {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08101f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.35);
+  border-radius: 999px;
+}

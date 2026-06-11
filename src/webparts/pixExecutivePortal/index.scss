@@ -1,0 +1,58 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+:root {
+  --navy-950: #060b18;
+  --navy-900: #0b1428;
+  --navy-800: #0f1e3d;
+  --navy-700: #162447;
+  --navy-600: #1e3460;
+
+  --blue-400: #3b82f6;
+  --blue-300: #60a5fa;
+  --cyan-300: #67e8f9;
+
+  --surface-1: #0f1e3d;
+  --surface-2: #162447;
+  --surface-3: #1e3460;
+
+  --border: rgba(59, 130, 246, 0.15);
+  --border-hi: rgba(59, 130, 246, 0.35);
+
+  --text-primary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--navy-950);
+  color: var(--text-primary);
+  font-family: "Segoe UI", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+[data-automation-id="CanvasZone"],
+.CanvasZone,
+.CanvasSection,
+.ControlZone {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.ControlZone {
+  padding: 0 !important;
+}
+
+.spAppAndPropertyPanelContainer {
+  overflow-x: hidden;
+}
