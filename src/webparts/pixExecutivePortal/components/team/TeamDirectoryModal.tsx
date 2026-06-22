@@ -1,13 +1,7 @@
 import * as React from "react";
 
 import {
-  useMemo,
-  useState,
-} from "react";
-
-import {
   Globe,
-  Search,
   X,
 } from "lucide-react";
 
@@ -44,43 +38,6 @@ const TeamDirectoryModal = ({
   now,
   onClose,
 }: ITeamDirectoryModalProps): JSX.Element | null => {
-
-  /* ======================================================
-     STATE
-  ====================================================== */
-
-  const [searchText, setSearchText] =
-    useState<string>("");
-
-  /* ======================================================
-     SEARCH FILTER
-  ====================================================== */
-
-  const filteredRegions =
-    useMemo(() => {
-
-      return regions.filter((region) => {
-
-        if (!searchText) {
-
-          return true;
-        }
-
-        return (
-          (
-            region.city +
-            region.country +
-            region.code +
-            region.members.join(" ")
-          )
-            .toLowerCase()
-            .includes(
-              searchText.toLowerCase()
-            )
-        );
-      });
-
-    }, [regions, searchText]);
 
   /* ======================================================
      FORMAT TIME
@@ -120,6 +77,30 @@ const TeamDirectoryModal = ({
       }
     ).format(now);
   };
+
+  /* ======================================================
+     KPI VALUES
+  ====================================================== */
+
+  const totalRegions =
+    regions.length;
+
+  const totalMembers =
+    regions.reduce(
+      (
+        total,
+        region
+      ) =>
+        total +
+        region.members.length,
+      0
+    );
+
+  const activeRegions =
+    regions.filter(
+      (region) =>
+        region.isActive
+    ).length;
 
   /* ======================================================
      CLOSED
@@ -174,29 +155,80 @@ const TeamDirectoryModal = ({
         </div>
 
         {/* ==================================================
-            TOOLBAR
+            EXECUTIVE KPI BAR
         =================================================== */}
 
         <div className="pix-modal__toolbar">
 
-          <div className="pix-modal-search">
+          <div className="pix-library-workspace">
 
-            <Search size={16} />
+            <div className="pix-library-workspace__left">
 
-            <input
-              type="text"
-              placeholder="
-                Search regions,
-                countries,
-                members...
-              "
-              value={searchText}
-              onChange={(e) =>
-                setSearchText(
-                  e.target.value
-                )
-              }
-            />
+              <div className="pix-library-stat">
+
+                <div className="pix-library-stat__label">
+
+                  TOTAL REGIONS
+
+                </div>
+
+                <div className="pix-library-stat__value">
+
+                  {totalRegions}
+
+                </div>
+
+              </div>
+
+              <div className="pix-library-stat">
+
+                <div className="pix-library-stat__label">
+
+                  TEAM MEMBERS
+
+                </div>
+
+                <div className="pix-library-stat__value">
+
+                  {totalMembers}
+
+                </div>
+
+              </div>
+
+              <div className="pix-library-stat">
+
+                <div className="pix-library-stat__label">
+
+                  ACTIVE REGIONS
+
+                </div>
+
+                <div className="pix-library-stat__value">
+
+                  {activeRegions}
+
+                </div>
+
+              </div>
+
+              <div className="pix-library-stat">
+
+                <div className="pix-library-stat__label">
+
+                  GLOBAL COVERAGE
+
+                </div>
+
+                <div className="pix-library-stat__value">
+
+                  24×7
+
+                </div>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -208,7 +240,7 @@ const TeamDirectoryModal = ({
 
         <div className="pix-team-modal-grid">
 
-          {filteredRegions.map((region) => (
+          {regions.map((region) => (
 
             <article
               key={region.id}

@@ -22,7 +22,7 @@ from "../../services/AgendaService";
 
 import {
   IAgendaItem,
-} from "../../data/agenda";
+} from "../../services/agenda.service";
 
 /* =========================================================
    MODAL

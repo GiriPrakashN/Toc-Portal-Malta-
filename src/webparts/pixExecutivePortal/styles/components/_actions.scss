@@ -995,7 +995,7 @@
 
 /* =========================================================
    DOCUMENT ROW
-   ========================================================= */
+   =========================================================*/ 
 
 .pix-document-row {
 
@@ -2095,12 +2095,7 @@
    DOCUMENT ROW HOVER
 ========================================================= */
 
-.pix-document-row {
 
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
 
 .pix-document-row:hover {
 
@@ -2319,4 +2314,317 @@
 
     justify-content: flex-end;
   }
+}
+
+/* =========================================================
+   DOCUMENT TABLE
+========================================================= */
+
+.pix-documents-table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+}
+
+.pix-documents-table thead {
+
+  display: table-header-group;
+}
+
+.pix-documents-table tbody {
+
+  display: table-row-group;
+}
+
+.pix-documents-table tr {
+
+  display: table-row;
+}
+
+.pix-documents-table th,
+.pix-documents-table td {
+
+  display: table-cell;
+
+  vertical-align: middle;
+
+  text-align: left;
+}
+
+.pix-documents-table thead th {
+
+  padding: 18px 16px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #6b7280;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pix-documents-table tbody td {
+
+  padding: 20px 16px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+.pix-col-check {
+
+  width: 60px;
+
+  text-align: center;
+}
+
+.pix-col-document {
+
+  width: 50%;
+}
+
+.pix-col-modified {
+
+  width: 18%;
+}
+
+.pix-col-status {
+
+  width: 12%;
+}
+
+.pix-col-updated {
+
+  width: 12%;
+}
+
+.pix-col-actions {
+
+  width: 60px;
+
+  text-align: center;
+}
+/* =========================================================
+   DOCUMENT CONTENT
+========================================================= */
+
+.pix-document-left {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  width: 100%;
+}
+
+.pix-document-content {
+
+  flex: 1;
+
+  min-width: 0;
+}
+
+.pix-document-title {
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.pix-document-meta {
+
+  margin-top: 4px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.pix-document-user {
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  color: #1f2937;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.pix-document-icon {
+
+  width: 64px;
+
+  height: 64px;
+
+  min-width: 64px;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-shadow:
+    0 6px 24px rgba(15,23,42,0.08);
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.pix-document-status {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 30px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+.pix-document-delete {
+
+  opacity: 0;
+
+  background: transparent;
+
+  border: none;
+
+  cursor: pointer;
+
+  color: #94a3b8;
+
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+
+.pix-documents-table tbody tr:hover
+.pix-document-delete {
+
+  opacity: 1;
+}
+
+.pix-document-delete:hover {
+
+  color: #dc2626;
+}
+
+/* =========================================================
+   STATES
+========================================================= */
+
+.pix-document-row--selected {
+
+  background:
+    rgba(37,99,235,0.06);
+}
+
+.pix-document-row--deleting {
+
+  opacity: 0.5;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   BULK BAR
+========================================================= */
+
+.pix-bulk-bar {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px 16px;
+
+  background: #fff7ed;
+
+  border-bottom: 1px solid #fed7aa;
+}
+
+.pix-bulk-bar__count {
+
+  font-weight: 600;
+
+  color: #92400e;
+}
+
+.pix-bulk-bar__delete {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #dc2626;
+
+  color: #ffffff;
+
+  cursor: pointer;
+}
+
+.pix-bulk-bar__clear {
+
+  border: none;
+
+  background: transparent;
+
+  color: #64748b;
+
+  cursor: pointer;
 }

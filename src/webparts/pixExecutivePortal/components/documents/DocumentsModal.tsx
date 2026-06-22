@@ -9,7 +9,8 @@ import {
   FileArchive,
   FileCode,
   Presentation,
-  File
+  File,
+  Trash2
 } from "lucide-react";
 
 import {
@@ -46,7 +47,6 @@ React.FC<IDocumentsModalProps> = ({
      STATE
   ======================================================= */
 
-
   const [uploading, setUploading] =
     React.useState(false);
 
@@ -55,6 +55,20 @@ React.FC<IDocumentsModalProps> = ({
     setLocalDocuments
   ] = React.useState<IDocumentItem[]>(
     documents
+  );
+
+  const [
+    selectedIds,
+    setSelectedIds
+  ] = React.useState<Set<number>>(
+    new Set()
+  );
+
+  const [
+    deletingIds,
+    setDeletingIds
+  ] = React.useState<Set<number>>(
+    new Set()
   );
 
   /* =======================================================
@@ -244,6 +258,202 @@ React.FC<IDocumentsModalProps> = ({
     } finally {
 
       setUploading(false);
+    }
+  };
+
+  /* =======================================================
+     SELECTION
+  ======================================================= */
+
+  const allSelected =
+    localDocuments.length > 0 &&
+    selectedIds.size === localDocuments.length;
+
+  const someSelected =
+    selectedIds.size > 0 &&
+    selectedIds.size < localDocuments.length;
+
+  const toggleSelectAll = (): void => {
+
+    if (allSelected) {
+
+      setSelectedIds(new Set());
+
+    } else {
+
+      setSelectedIds(
+        new Set(localDocuments.map(d => d.id))
+      );
+    }
+  };
+
+  const toggleSelect = (
+    id: number
+  ): void => {
+
+    setSelectedIds(prev => {
+
+      const next = new Set(prev);
+
+      if (next.has(id)) {
+
+        next.delete(id);
+
+      } else {
+
+        next.add(id);
+      }
+
+      return next;
+    });
+  };
+
+  /* =======================================================
+     DELETE SINGLE
+  ======================================================= */
+
+  const handleDeleteSingle = async (
+  doc: IDocumentItem,
+  event: React.MouseEvent
+): Promise<void> => {
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (
+    !window.confirm(
+      `Delete "${doc.title}"?`
+    )
+  ) {
+
+    return;
+  }
+
+  setDeletingIds(prev => {
+
+    const next = new Set(prev);
+    next.add(doc.id);
+    return next;
+  });
+
+  try {
+
+    const success =
+      await DocumentsService.deleteDocument(
+        doc.id
+      );
+
+    if (!success) {
+
+      throw new Error(
+        "Delete failed"
+      );
+    }
+
+    const refreshedDocs =
+      await DocumentsService.getDocuments();
+
+    setLocalDocuments(
+      refreshedDocs
+    );
+
+    setSelectedIds(prev => {
+
+      const next = new Set(prev);
+
+      next.delete(doc.id);
+
+      return next;
+    });
+
+  } catch (error) {
+
+    console.error(
+      "[DocumentsModal] Delete failed",
+      error
+    );
+
+    alert(
+      "Failed to delete document."
+    );
+
+  } finally {
+
+    setDeletingIds(prev => {
+
+      const next = new Set(prev);
+
+      next.delete(doc.id);
+
+      return next;
+    });
+  }
+};
+  /* =======================================================
+     DELETE BULK
+  ======================================================= */
+
+  const handleDeleteBulk =
+  async (): Promise<void> => {
+
+    if (
+      selectedIds.size === 0
+    ) {
+
+      return;
+    }
+
+    if (
+      !window.confirm(
+        `Delete ${selectedIds.size} selected document${selectedIds.size > 1 ? "s" : ""}?`
+      )
+    ) {
+
+      return;
+    }
+
+    const ids =
+      Array.from(selectedIds);
+
+    setDeletingIds(
+      new Set(ids)
+    );
+
+    try {
+
+      await Promise.all(
+        ids.map(id =>
+          DocumentsService.deleteDocument(id)
+        )
+      );
+
+      const refreshedDocs =
+        await DocumentsService.getDocuments();
+
+      setLocalDocuments(
+        refreshedDocs
+      );
+
+      setSelectedIds(
+        new Set()
+      );
+
+    } catch (error) {
+
+      console.error(
+        "[DocumentsModal] Bulk delete failed",
+        error
+      );
+
+      alert(
+        "Some documents could not be deleted."
+      );
+
+    } finally {
+
+      setDeletingIds(
+        new Set()
+      );
     }
   };
 
@@ -470,9 +680,55 @@ React.FC<IDocumentsModalProps> = ({
 
 </div>
 
-          
-
         </div>
+
+        {/* =================================================
+            BULK DELETE BAR
+        ================================================== */}
+
+        {
+          selectedIds.size > 0 && (
+
+            <div className="pix-bulk-bar">
+
+              <span className="pix-bulk-bar__count">
+
+                {selectedIds.size} selected
+
+              </span>
+
+              <button
+                className="pix-bulk-bar__delete"
+                onClick={handleDeleteBulk}
+                disabled={deletingIds.size > 0}
+              >
+
+                <Trash2 size={15} />
+
+                <span>
+
+                  {
+                    deletingIds.size > 0
+                      ? "Deleting..."
+                      : `Delete ${selectedIds.size}`
+                  }
+
+                </span>
+
+              </button>
+
+              <button
+                className="pix-bulk-bar__clear"
+                onClick={() => setSelectedIds(new Set())}
+              >
+
+                Clear selection
+
+              </button>
+
+            </div>
+          )
+        }
 
         {/* =================================================
             TABLE
@@ -481,20 +737,52 @@ React.FC<IDocumentsModalProps> = ({
         <div className="pix-modal__table-wrapper">
 
           <table
-            className="pix-actions-table"
-          >
+  className="pix-documents-table"
+>
+
 
             <thead>
 
               <tr>
 
-                <th>Document</th>
+                {/* Checkbox column */}
 
-                <th>Modified By</th>
+                <th className="pix-col-check">
 
-                <th>Status</th>
+                  <input
+                    type="checkbox"
+                    className="pix-checkbox"
+                    checked={allSelected}
+                    ref={el => {
+                      if (el) {
+                        el.indeterminate = someSelected;
+                      }
+                    }}
+                    onChange={toggleSelectAll}
+                    onClick={e => e.stopPropagation()}
+                  />
 
-                <th>Updated</th>
+                </th>
+
+                <th className="pix-col-document">
+  Document
+</th>
+
+<th className="pix-col-modified">
+  Modified By
+</th>
+
+<th className="pix-col-status">
+  Status
+</th>
+
+<th className="pix-col-updated">
+  Updated
+</th>
+
+                {/* Actions column */}
+
+                <th className="pix-col-actions" />
 
               </tr>
 
@@ -506,23 +794,55 @@ React.FC<IDocumentsModalProps> = ({
                 filteredDocuments.map(
                   (doc) => {
 
+                    const isSelected =
+                      selectedIds.has(doc.id);
+
+                    const isDeleting =
+                      deletingIds.has(doc.id);
+
                     return (
 
                       <tr
-                        key={doc.id}
-                        className="pix-document-row"
-                        onClick={() =>
-                          openDocument(
-                            doc.fileUrl
-                          )
-                        }
-                      >
+  key={doc.id}
+  className={`
+    pix-document-row
+    ${isSelected ? "pix-document-row--selected" : ""}
+    ${isDeleting ? "pix-document-row--deleting" : ""}
+  `}
+  onClick={() => {
+
+    if (!isDeleting) {
+
+      openDocument(
+        doc.fileUrl
+      );
+    }
+  }}
+>
+
+                        {/* =====================
+                            CHECKBOX
+                        ====================== */}
+
+                        <td
+                          className="pix-col-check"
+                          onClick={e => e.stopPropagation()}
+                        >
+
+                          <input
+                            type="checkbox"
+                            className="pix-checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleSelect(doc.id)}
+                          />
+
+                        </td>
 
                         {/* =====================
                             DOCUMENT
                         ====================== */}
 
-                        <td>
+                        <td className="pix-col-document">
 
                           <div className="pix-document-left">
 
@@ -560,50 +880,74 @@ React.FC<IDocumentsModalProps> = ({
                             MODIFIED
                         ====================== */}
 
-                        <td>
+                        <td className="pix-col-modified">
 
-                          <div className="pix-owner__name">
+  <div className="pix-document-user">
 
-                            {doc.modifiedBy}
+    {doc.modifiedBy}
 
-                          </div>
+  </div>
 
-                        </td>
+</td>
 
                         {/* =====================
                             STATUS
                         ====================== */}
 
-                        <td>
+                        <td className="pix-col-status">
 
-                          <div
-                            className={`
-                              pix-document-status
-                              pix-document-status--${doc.approvalStatus?.toLowerCase()}
-                            `}
-                          >
+  <div
+    className={`
+      pix-document-status
+      pix-document-status--${doc.approvalStatus?.toLowerCase()}
+    `}
+  >
 
-                            {doc.approvalStatus}
+    {doc.approvalStatus}
 
-                          </div>
+  </div>
 
-                        </td>
+</td>
 
                         {/* =====================
                             UPDATED
                         ====================== */}
 
-                        <td>
+                        <td className="pix-col-updated">
 
-                          <div className="pix-document-modified">
+  <div className="pix-document-modified">
 
-                            {
-                              getRelativeTime(
-                                doc.modified
-                              )
+    {
+      getRelativeTime(
+        doc.modified
+      )
+    }
+
+  </div>
+
+</td>
+
+                        {/* =====================
+                            DELETE ACTION
+                        ====================== */}
+
+                        <td
+                          className="pix-col-actions"
+                          onClick={e => e.stopPropagation()}
+                        >
+
+                          <button
+                            className="pix-document-delete"
+                            onClick={e =>
+                              handleDeleteSingle(doc, e)
                             }
+                            disabled={isDeleting}
+                            title="Delete document"
+                          >
 
-                          </div>
+                            <Trash2 size={15} />
+
+                          </button>
 
                         </td>
 

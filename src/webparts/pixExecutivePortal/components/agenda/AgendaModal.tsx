@@ -10,7 +10,7 @@ import {
 
 import {
   IAgendaItem,
-} from "../../data/agenda";
+} from "../../services/agenda.service";
 
 /* =========================================================
    PROPS

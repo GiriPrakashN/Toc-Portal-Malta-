@@ -72,4 +72,21 @@ export const regions: ITeamRegion[] = [
       "Mike R.",
     ],
   },
+
+  {
+  id: 5,
+  code: "ID",
+  city: "JAKARTA",
+  country: "Indonesia",
+  timezone: "Asia/Jakarta",
+  accent: "cyan",
+  displayOrder: 5,
+  isActive: true,
+  members: [
+    "Agus S.",
+    "Budi K.",
+    "Rina P.",
+    "Dewi A.",
+  ],
+},
 ];

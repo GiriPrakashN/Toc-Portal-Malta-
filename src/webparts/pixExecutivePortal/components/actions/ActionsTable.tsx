@@ -33,8 +33,12 @@ import {
 ========================================================= */
 
 import {
-  keyDates,
-} from "../../data/keydates";
+  KeyDatesService,
+} from "../../services/keyDates.service";
+
+import {
+  IKeyDate,
+} from "../../models/IKeyDate";
 
 
 import ActionsModal from "./ActionsModal";
@@ -65,6 +69,9 @@ const ActionsTable = (): JSX.Element => {
 
   const [actions, setActions] =
     useState<IExecutiveAction[]>([]);
+
+  const [keyDates, setKeyDates] =
+  useState<IKeyDate[]>([]);
 
   const [loading, setLoading] =
     useState<boolean>(true);
@@ -109,6 +116,24 @@ const ActionsTable = (): JSX.Element => {
     }
   };
 
+  const loadKeyDates = async (): Promise<void> => {
+
+  try {
+
+    const response =
+      await KeyDatesService.getKeyDates();
+
+    setKeyDates(response);
+
+  } catch (error) {
+
+    console.error(
+      "[ActionsTable] Failed to load key dates",
+      error
+    );
+  }
+};
+
   /* ======================================================
      INITIAL LOAD
   ====================================================== */
@@ -116,6 +141,8 @@ const ActionsTable = (): JSX.Element => {
   useEffect(() => {
 
     loadActions();
+
+    loadKeyDates();
 
   }, []);
 
@@ -591,10 +618,10 @@ const ActionsTable = (): JSX.Element => {
 
           <div className="pix-timeline">
 
-            {keyDates.map((item, index) => (
+            {keyDates.map((item) => (
 
               <div
-                key={index}
+                key={item.Id}
                 className="pix-timeline__item"
               >
 
@@ -602,25 +629,33 @@ const ActionsTable = (): JSX.Element => {
                   className="pix-timeline__dot"
                   style={{
                     background:
-                      item.color,
+                      item.Color,
                   }}
                 />
 
                 <div className="pix-timeline__date">
 
-                  {item.date}
+                  {new Date(item.EventDate)
+  .toLocaleDateString(
+    "en-GB",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+)}
 
                 </div>
 
                 <div className="pix-timeline__title">
 
-                  {item.title}
+                  {item.Title}
 
                 </div>
 
                 <div className="pix-timeline__note">
 
-                  {item.note}
+                  {item.Note}
 
                 </div>
 

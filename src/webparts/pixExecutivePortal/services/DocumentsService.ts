@@ -2,7 +2,6 @@
    PNP
 ========================================================= */
 
-
 import "@pnp/sp/webs";
 
 import "@pnp/sp/lists";
@@ -26,6 +25,7 @@ import {
 import {
   documents,
 } from "../data/documents";
+
 import { getSP } from "./sp";
 
 /* =========================================================
@@ -69,38 +69,37 @@ class DocumentsService {
 
     try {
 
+      const sp = getSP();
 
-const sp = getSP();
+      if (!sp) {
 
-if (!sp) {
+        console.error(
+          "[DocumentsService] SP is not initialized"
+        );
 
-  console.error(
-    "[DocumentsService] SP is not initialized"
-  );
+        return documents;
+      }
 
-  return documents;
-}
-
-const items =
-  await sp.web
-          .lists
-          .getByTitle(
-            DOCUMENT_LIBRARY_NAME
-          )
-          .items
-          .select(
-            "*",
-            "FileLeafRef",
-            "FileRef",
-            "Modified",
-            "Editor/Title"
-          )
-          .expand("Editor")
-          .orderBy(
-            "Modified",
-            false
-          )
-          .top(50)();
+      const items =
+        await sp.web
+                .lists
+                .getByTitle(
+                  DOCUMENT_LIBRARY_NAME
+                )
+                .items
+                .select(
+                  "*",
+                  "FileLeafRef",
+                  "FileRef",
+                  "Modified",
+                  "Editor/Title"
+                )
+                .expand("Editor")
+                .orderBy(
+                  "Modified",
+                  false
+                )
+                .top(50)();
 
       return items.map((item) => ({
 
@@ -116,8 +115,8 @@ const items =
         fileType:
           item.File_x0020_Type,
 
-       fileUrl:
-  `${window.location.origin}${item.FileRef}`,
+        fileUrl:
+          `${window.location.origin}${item.FileRef}`,
 
         modified:
           item.Modified,
@@ -149,53 +148,95 @@ const items =
   }
 
   /* ======================================================
-   UPLOAD DOCUMENT
-====================================================== */
+     UPLOAD DOCUMENT
+  ====================================================== */
 
-public async uploadDocument(
-  file: File
-): Promise<boolean> {
+  public async uploadDocument(
+    file: File
+  ): Promise<boolean> {
 
-  try {
+    try {
 
-    const sp = getSP();
+      const sp = getSP();
 
-    if (!sp) {
+      if (!sp) {
+
+        console.error(
+          "[DocumentsService] SP not initialized"
+        );
+
+        return false;
+      }
+
+      await sp.web
+        .getFolderByServerRelativePath(
+          DOCUMENT_LIBRARY_NAME
+        )
+        .files
+        .addUsingPath(
+          file.name,
+          file,
+          {
+            Overwrite: true
+          }
+        );
+
+      return true;
+
+    } catch (error) {
 
       console.error(
-        "[DocumentsService] SP not initialized"
+        "[DocumentsService] Upload failed",
+        error
       );
 
       return false;
     }
+  }
 
-    await sp.web
-      .getFolderByServerRelativePath(
-        DOCUMENT_LIBRARY_NAME
-      )
-      .files
-      .addUsingPath(
-        file.name,
-        file,
-        {
-          Overwrite: true
-        }
+  /* ======================================================
+     DELETE DOCUMENT
+  ====================================================== */
+
+  public async deleteDocument(
+    id: number
+  ): Promise<boolean> {
+
+    try {
+
+      const sp = getSP();
+
+      if (!sp) {
+
+        console.error(
+          "[DocumentsService] SP not initialized"
+        );
+
+        return false;
+      }
+
+      await sp.web
+              .lists
+              .getByTitle(
+                DOCUMENT_LIBRARY_NAME
+              )
+              .items
+              .getById(id)
+              .delete();
+
+      return true;
+
+    } catch (error) {
+
+      console.error(
+        "[DocumentsService] Delete failed",
+        error
       );
 
-    return true;
-
-  } catch (error) {
-
-    console.error(
-      "[DocumentsService] Upload failed",
-      error
-    );
-
-    return false;
+      return false;
+    }
   }
-}
 
 }
-
 
 export default new DocumentsService();

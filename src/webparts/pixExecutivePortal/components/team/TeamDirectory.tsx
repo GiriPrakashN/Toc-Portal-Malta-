@@ -24,6 +24,8 @@ const TeamDirectory = (): JSX.Element => {
   const [regions, setRegions] =
     useState<ITeamRegion[]>([]);
 
+  const dashboardRegions =
+    regions.slice(0, 4);
   const [now, setNow] =
     useState(new Date());
 
@@ -159,7 +161,7 @@ const TeamDirectory = (): JSX.Element => {
 
       <div className="pix-team-directory__grid">
 
-        {regions.map((region) => (
+        {dashboardRegions.map((region) => (
 
           <article
             key={region.id}

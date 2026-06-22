@@ -1,306 +1,488 @@
 import * as React from "react";
 
 import {
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+
+import {
   BriefcaseBusiness
 } from "lucide-react";
 
 import {
-  sponsors,
-  ISponsorItem
-} from "../../data/sponsors";
+  ISponsor
+} from "../../models/ISponsor";
+
+import {
+  ISponsorSettings
+} from "../../models/ISponsorSettings";
+
+import {
+  SponsorsService
+} from "../../services/sponsors.service";
+
+import {
+  SponsorsSettingsService
+} from "../../services/sponsorsSettings.service";
+
+import SponsorsModal
+from "./SponsorsModal";
 
 const SponsorsPanel = (): JSX.Element => {
 
-  return (
+  const [sponsors, setSponsors] =
+    useState<ISponsor[]>([]);
 
-    <section className="pix-sponsors-panel">
+  const [settings, setSettings] =
+    useState<ISponsorSettings | null>(null);
 
-      {/* ======================================================
-          HEADER
-      ====================================================== */}
+  const [loading, setLoading] =
+    useState<boolean>(true);
 
-      <div className="pix-ops-panel__header">
+  const [showModal, setShowModal] =
+    useState<boolean>(false);
 
-        <div className="pix-ops-panel__title-group">
+  useEffect(() => {
 
-          <BriefcaseBusiness
-            size={16}
-            color="#8b5cf6"
-          />
+    const loadData =
+      async (): Promise<void> => {
 
-          <h2 className="pix-ops-panel__title">
+        try {
 
-            Sponsors
+          setLoading(true);
 
-          </h2>
+          const [
+            sponsorsResponse,
+            settingsResponse
+          ] = await Promise.all([
+            SponsorsService.getSponsors(),
+            SponsorsSettingsService.getSettings()
+          ]);
 
-          <div className="pix-open-badge">
+          setSponsors(
+            sponsorsResponse
+          );
 
-            4 Confirmed
+          setSettings(
+            settingsResponse
+          );
 
-          </div>
+        } catch (error) {
 
-        </div>
+          console.error(
+            "[SponsorsPanel]",
+            error
+          );
 
-        <button className="pix-panel-cta">
+        } finally {
 
-          Full tracker →
+          setLoading(false);
+        }
+      };
 
-        </button>
+    loadData();
 
-      </div>
+  }, []);
 
-      {/* ======================================================
-          KPI BAR
-      ====================================================== */}
+  const confirmedSponsors =
+    useMemo(() => {
 
-      <div
-        style={{
-          padding:
-            "18px 20px 20px",
-          borderBottom:
-            "1px solid rgba(15,23,42,0.06)",
-        }}
+      return sponsors.filter(
+        (item) =>
+          item.Status
+            .toLowerCase() ===
+          "confirmed"
+      ).length;
+
+    }, [sponsors]);
+
+  const revenueAchieved =
+    useMemo(() => {
+
+      return sponsors
+        .filter(
+          (item) =>
+            item.Status
+              .toLowerCase() ===
+            "confirmed"
+        )
+        .reduce(
+          (
+            total,
+            item
+          ) =>
+            total +
+            Number(
+              item.SponsorValue || 0
+            ),
+          0
+        );
+
+    }, [sponsors]);
+
+  const percentageAchieved =
+    useMemo(() => {
+
+      if (
+        !settings ||
+        !settings.RevenueTarget
+      ) {
+
+        return 0;
+      }
+
+      return Math.round(
+        (
+          revenueAchieved /
+          settings.RevenueTarget
+        ) * 100
+      );
+
+    }, [
+      revenueAchieved,
+      settings
+    ]);
+
+  const progressWidth =
+    `${Math.min(
+      percentageAchieved,
+      100
+    )}%`;
+
+  if (loading) {
+
+    return (
+
+      <section
+        className="pix-sponsors-panel"
       >
 
         <div
           style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            gap: "12px",
-            marginBottom:
-              "12px",
-            fontSize:
-              "12px",
-            color:
-              "#666666",
+            padding: "40px"
           }}
         >
 
-          <div>
-
-            <strong
-              style={{
-                color:
-                  "#111111",
-              }}
-            >
-
-              4 of 24
-
-            </strong>
-
-            {" "}
-            confirmed ·
-
-            <strong
-              style={{
-                color:
-                  "#111111",
-              }}
-            >
-
-              {" "}
-              $400K
-
-            </strong>
-
-            {" "}
-            of
-
-            <strong
-              style={{
-                color:
-                  "#111111",
-              }}
-            >
-
-              {" "}
-              $1.8M
-
-            </strong>
-
-            {" "}
-            target
-
-          </div>
-
-          <div
-            style={{
-              fontWeight:
-                800,
-              color:
-                "#06b6d4",
-            }}
-          >
-
-            22%
-
-          </div>
+          Loading sponsors...
 
         </div>
 
-        {/* PROGRESS */}
+      </section>
+    );
+  }
+
+  return (
+
+    <>
+
+      <section className="pix-sponsors-panel">
+
+        {/* HEADER */}
+
+        <div className="pix-ops-panel__header">
+
+          <div className="pix-ops-panel__title-group">
+
+            <BriefcaseBusiness
+              size={16}
+              color="#8b5cf6"
+            />
+
+            <h2 className="pix-ops-panel__title">
+
+              Sponsors
+
+            </h2>
+
+            <div className="pix-open-badge">
+
+              {confirmedSponsors}
+              {" "}
+              Confirmed
+
+            </div>
+
+          </div>
+
+          <button
+            className="pix-panel-cta"
+            onClick={() =>
+              setShowModal(true)
+            }
+          >
+
+            Full tracker →
+
+          </button>
+
+        </div>
+
+        {/* KPI */}
 
         <div
           style={{
-            height:
-              "8px",
-            overflow:
-              "hidden",
-            borderRadius:
-              "999px",
-            background:
-              "rgba(15,23,42,0.08)",
+            padding:
+              "18px 20px 20px",
+            borderBottom:
+              "1px solid rgba(15,23,42,0.06)"
           }}
         >
 
           <div
             style={{
-              width:
-                "22%",
-              height:
-                "100%",
+              display: "flex",
+              justifyContent:
+                "space-between",
+              gap: "12px",
+              marginBottom:
+                "12px",
+              fontSize:
+                "12px",
+              color:
+                "#666666"
+            }}
+          >
+
+            <div>
+
+              <strong
+                style={{
+                  color:
+                    "#111111"
+                }}
+              >
+
+                {confirmedSponsors}
+                {" of "}
+                {
+                  settings?.TotalSponsorTarget ?? 0
+                }
+
+              </strong>
+
+              {" "}
+              confirmed ·
+
+              <strong
+                style={{
+                  color:
+                    "#111111"
+                }}
+              >
+
+                {" $"}
+                {
+                  revenueAchieved.toLocaleString()
+                }
+
+              </strong>
+
+              {" "}
+              of
+
+              <strong
+                style={{
+                  color:
+                    "#111111"
+                }}
+              >
+
+                {" $"}
+                {
+                  settings?.RevenueTarget
+                    ?.toLocaleString()
+                }
+
+              </strong>
+
+              {" "}
+              target
+
+            </div>
+
+            <div
+              style={{
+                fontWeight:
+                  800,
+                color:
+                  "#06b6d4"
+              }}
+            >
+
+              {percentageAchieved}%
+
+            </div>
+
+          </div>
+
+          <div
+            style={{
+              height: "8px",
+              overflow:
+                "hidden",
               borderRadius:
                 "999px",
               background:
-                "linear-gradient(90deg,#22d3ee,#a3e635,#fb7185)",
+                "rgba(15,23,42,0.08)"
             }}
-          />
+          >
+
+            <div
+              style={{
+                width:
+                  progressWidth,
+                height:
+                  "100%",
+                borderRadius:
+                  "999px",
+                background:
+                  "linear-gradient(90deg,#22d3ee,#a3e635,#fb7185)"
+              }}
+            />
+
+          </div>
 
         </div>
 
-      </div>
+        {/* TABLE */}
 
-      {/* ======================================================
-          TABLE
-      ====================================================== */}
+        <table className="pix-sponsors-table">
 
-      <table className="pix-sponsors-table">
+          <thead>
 
-        <thead>
+            <tr>
 
-          <tr>
+              <th>Sponsor</th>
+              <th>Tier</th>
+              <th>Owner</th>
+              <th>Value</th>
+              <th>Status</th>
 
-            <th>Sponsor</th>
+            </tr>
 
-            <th>Tier</th>
+          </thead>
 
-            <th>Owner</th>
+          <tbody>
 
-            <th>Value</th>
+            {sponsors.map(
+              (sponsor) => (
 
-            <th>Status</th>
+                <tr
+                  key={sponsor.Id}
+                >
 
-          </tr>
+                  <td>
 
-        </thead>
+                    <div className="pix-sponsor">
 
-        <tbody>
+                      <div className="pix-sponsor__avatar">
 
-          {sponsors.map(
-            (
-              sponsor: ISponsorItem
-            ) => (
-
-              <tr key={sponsor.id}>
-
-                {/* SPONSOR */}
-
-                <td>
-
-                  <div className="pix-sponsor">
-
-                    <div className="pix-sponsor__avatar">
-
-                      {sponsor.short}
-
-                    </div>
-
-                    <div>
-
-                      <div className="pix-sponsor__name">
-
-                        {sponsor.name}
+                        {
+                          sponsor.ShortCode
+                        }
 
                       </div>
 
-                      <div className="pix-sponsor__owner">
+                      <div>
 
-                        {sponsor.owner}
+                        <div className="pix-sponsor__name">
+
+                          {
+                            sponsor.Title
+                          }
+
+                        </div>
+
+                        <div className="pix-sponsor__owner">
+
+                          {
+                            sponsor.OwnerName
+                          }
+
+                        </div>
 
                       </div>
 
                     </div>
 
-                  </div>
+                  </td>
 
-                </td>
+                  <td>
 
-                {/* TIER */}
+                    <div className="pix-sponsor-tier">
 
-                <td>
+                      {
+                        sponsor.Tier
+                      }
 
-                  <div className="pix-sponsor-tier">
+                    </div>
 
-                    {sponsor.tier}
+                  </td>
 
-                  </div>
+                  <td>
 
-                </td>
+                    <div className="pix-action-region">
 
-                {/* OWNER */}
+                      {
+                        sponsor.OwnerName
+                      }
 
-                <td>
+                    </div>
 
-                  <div className="pix-action-region">
+                  </td>
 
-                    {sponsor.owner}
+                  <td>
 
-                  </div>
+                    <div className="pix-sponsor-value">
 
-                </td>
+                      $
+                      {
+                        sponsor.SponsorValue
+                          .toLocaleString()
+                      }
 
-                {/* VALUE */}
+                    </div>
 
-                <td>
+                  </td>
 
-                  <div className="pix-sponsor-value">
+                  <td>
 
-                    {sponsor.value}
+                    <div
+                      className={`
+                        pix-sponsor-status
+                        pix-sponsor-status--${sponsor.Status.toLowerCase()}
+                      `}
+                    >
 
-                  </div>
+                      {
+                        sponsor.Status
+                      }
 
-                </td>
+                    </div>
 
-                {/* STATUS */}
+                  </td>
 
-                <td>
+                </tr>
 
-                  <div
-                    className={`
-                      pix-sponsor-status
-                      pix-sponsor-status--${sponsor.status}
-                    `}
-                  >
+              )
+            )}
 
-                    {sponsor.status}
+          </tbody>
 
-                  </div>
+        </table>
 
-                </td>
+      </section>
 
-              </tr>
+      <SponsorsModal
+        isOpen={showModal}
+        sponsors={sponsors}
+        onClose={() =>
+          setShowModal(false)
+        }
+      />
 
-            )
-          )}
-
-        </tbody>
-
-      </table>
-
-    </section>
+    </>
   );
 };
 
