@@ -2,6 +2,8 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { heroConfig } from "../../config/heroConfig";
+import { EventSettingsService } from "../../services/eventSettings.service";
+import { IEventSettings } from "../../models/IEventSettings";
 
 interface ICountdown {
   days: string;
@@ -10,27 +12,95 @@ interface ICountdown {
   seconds: string;
 }
 
+/* =========================================================
+   MERGE HELPER
+   Falls back to the static config for any field that is
+   blank / missing on the SharePoint list item, so the
+   banner never renders empty text if the list isn't
+   fully filled in yet.
+========================================================= */
+
+const mergeSettings = (
+  settings: IEventSettings | null
+) => {
+
+  if (!settings) {
+    return heroConfig;
+  }
+
+  return {
+    eventName:
+      settings.EventName || heroConfig.eventName,
+    eventSubTitle:
+      settings.EventSubTitle || heroConfig.eventSubTitle,
+    eventLocation:
+      settings.EventLocation || heroConfig.eventLocation,
+    eventDate:
+      settings.Title || heroConfig.eventDate,
+    eventDateISO:
+      settings.EventDate || heroConfig.eventDateISO,
+    heroTitleLine1:
+      settings.HeroTitleLine1 || heroConfig.heroTitleLine1,
+    heroTitleLine2:
+      settings.HeroTitleLine2 || heroConfig.heroTitleLine2,
+    invitationLabel:
+      settings.InvitationLabel || heroConfig.invitationLabel,
+    eventDuration:
+      settings.EventDuration || heroConfig.eventDuration,
+    description:
+      settings.Description || heroConfig.description,
+    verticalLabel:
+      heroConfig.verticalLabel,
+    logoLetter:
+      heroConfig.logoLetter
+  };
+};
+
 const Hero = (): JSX.Element => {
 
-  const targetDate =
-    new Date(heroConfig.eventDateISO).getTime();
+  const [config, setConfig] = useState(heroConfig);
 
   const [timeLeft, setTimeLeft] =
     useState<ICountdown>({
-      days: "000",
+      days: "0",
       hours: "00",
       minutes: "00",
       seconds: "00"
     });
 
+  /* ======================================================
+     LOAD EVENT SETTINGS FROM SHAREPOINT
+  ====================================================== */
+
   useEffect(() => {
 
-    const timer = setInterval(() => {
+    const loadSettings = async () => {
+
+      const settings =
+        await EventSettingsService.getSettings();
+
+      setConfig(mergeSettings(settings));
+    };
+
+    void loadSettings();
+
+  }, []);
+
+  /* ======================================================
+     COUNTDOWN
+  ====================================================== */
+
+  useEffect(() => {
+
+    const targetDate =
+      new Date(config.eventDateISO).getTime();
+
+    const tick = () => {
 
       const now = new Date().getTime();
 
       const difference =
-        targetDate - now;
+        Math.max(targetDate - now, 0);
 
       const days = Math.floor(
         difference / (1000 * 60 * 60 * 24)
@@ -51,17 +121,46 @@ const Hero = (): JSX.Element => {
       );
 
       setTimeLeft({
-        days: ("00" + days).slice(-3),
+        /* No leading-zero padding on days: 1, 12, or
+           123 days should all display in full without
+           being clipped by a fixed-width box. */
+        days: String(days),
         hours: ("0" + hours).slice(-2),
         minutes: ("0" + minutes).slice(-2),
         seconds: ("0" + seconds).slice(-2)
       });
+    };
 
-    }, 1000);
+    tick();
+
+    const timer = setInterval(tick, 1000);
 
     return () => clearInterval(timer);
 
-  }, [targetDate]);
+  }, [config.eventDateISO]);
+
+  /* ======================================================
+     META DATE (short form for the pill/meta strip)
+  ====================================================== */
+
+  const metaDate = (() => {
+
+    const parsed = new Date(config.eventDateISO);
+
+    if (isNaN(parsed.getTime())) {
+      return config.eventDate;
+    }
+
+    return new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    ).format(parsed).toUpperCase();
+
+  })();
 
   const countdownItems = [
     {
@@ -96,7 +195,7 @@ const Hero = (): JSX.Element => {
 
           <div className="pix-hero__logo">
 
-            {heroConfig.logoLetter}
+            {config.logoLetter}
 
           </div>
 
@@ -104,13 +203,13 @@ const Hero = (): JSX.Element => {
 
             <div className="pix-hero__identity-title">
 
-              {heroConfig.eventName}
+              {config.eventName}
 
             </div>
 
             <div className="pix-hero__identity-subtitle">
 
-              {heroConfig.eventSubTitle}
+              {config.eventSubTitle}
 
             </div>
 
@@ -120,9 +219,9 @@ const Hero = (): JSX.Element => {
 
         <div className="pix-hero__event-pill">
 
-          {heroConfig.eventDate},
+          {config.eventDate},
           {" "}
-          {heroConfig.eventLocation}
+          {config.eventLocation}
 
         </div>
 
@@ -138,7 +237,7 @@ const Hero = (): JSX.Element => {
 
           <span className="pix-hero__gradient">
 
-            {heroConfig.heroTitleLine1}
+            {config.heroTitleLine1}
 
           </span>
 
@@ -146,7 +245,7 @@ const Hero = (): JSX.Element => {
 
           <span className="pix-hero__gradient">
 
-            {heroConfig.heroTitleLine2}
+            {config.heroTitleLine2}
 
           </span>
 
@@ -164,25 +263,25 @@ const Hero = (): JSX.Element => {
 
           <div className="pix-hero__meta-item">
 
-            {heroConfig.eventLocation}
+            {config.eventLocation}
 
           </div>
 
           <div className="pix-hero__meta-item">
 
-            {heroConfig.eventDuration}
+            {config.eventDuration}
 
           </div>
 
           <div className="pix-hero__meta-item">
 
-            8 OCT 2026
+            {metaDate}
 
           </div>
 
           <div className="pix-hero__meta-item">
 
-            {heroConfig.invitationLabel}
+            {config.invitationLabel}
 
           </div>
 
@@ -196,7 +295,7 @@ const Hero = (): JSX.Element => {
 
       <p className="pix-hero__description">
 
-        {heroConfig.description}
+        {config.description}
 
       </p>
 
@@ -216,7 +315,7 @@ const Hero = (): JSX.Element => {
 
         <div className="pix-hero__vertical-label">
 
-          {heroConfig.verticalLabel}
+          {config.verticalLabel}
 
         </div>
 

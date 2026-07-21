@@ -1906,6 +1906,8 @@
 .pix-modal-search {
   height: 54px;
 
+  box-sizing: border-box;
+
   border-radius: 18px;
 
   background: #f4f3f0;
@@ -1921,8 +1923,16 @@
   gap: 12px;
 }
 
+.pix-modal-search__icon {
+  flex-shrink: 0;
+
+  color: #9a958c;
+}
+
 .pix-modal-search input {
   flex: 1;
+
+  min-width: 0;
 
   height: 100%;
 

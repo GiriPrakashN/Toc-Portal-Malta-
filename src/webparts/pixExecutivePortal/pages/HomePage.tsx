@@ -4,6 +4,7 @@ import Hero from "../components/hero/Hero";
 import DashboardShell from "../components/dashboard/DashboardShell";
 import MainLayout from "../layouts/MainLayout";
 import Footer from "../components/footer/Footer";
+import ErrorBoundary from "../components/common/ErrorBoundary";
 
 const HomePage = (): JSX.Element => {
   return (
@@ -11,7 +12,9 @@ const HomePage = (): JSX.Element => {
 
       {/* HERO */}
       <section className="mb-6">
-        <Hero />
+        <ErrorBoundary label="Hero Banner">
+          <Hero />
+        </ErrorBoundary>
       </section>
 
       {/* DASHBOARD */}
@@ -19,7 +22,9 @@ const HomePage = (): JSX.Element => {
 
       {/* FOOTER */}
       <section className="mt-8">
-        <Footer />
+        <ErrorBoundary label="Footer">
+          <Footer />
+        </ErrorBoundary>
       </section>
 
     </MainLayout>

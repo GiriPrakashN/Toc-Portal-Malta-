@@ -240,14 +240,11 @@ const ActionsModal = ({
 
           <div className="pix-modal-search">
 
-            <Search size={16} />
+            <Search size={16} className="pix-modal-search__icon" />
 
             <input
               type="text"
-              placeholder="
-                Search actions,
-                owners, regions...
-              "
+              placeholder="Search actions, owners, regions..."
               value={searchText}
               onChange={(e) =>
                 setSearchText(

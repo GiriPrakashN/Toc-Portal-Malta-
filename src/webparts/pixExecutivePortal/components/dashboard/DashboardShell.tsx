@@ -6,6 +6,7 @@ import ActionsTable from "../actions/ActionsTable";
 import AgendaPanel from "../agenda/AgendaPanel";
 import SponsorsPanel from "../sponsors/SponsorsPanel";
 import DocumentsPanel from "../documents/DocumentsPanel";
+import ErrorBoundary from "../common/ErrorBoundary";
 
 const DashboardShell = (): JSX.Element => {
 
@@ -21,7 +22,11 @@ const DashboardShell = (): JSX.Element => {
 
       <section className="pix-section">
 
-        <ExecutiveStats />
+        <ErrorBoundary label="Executive Stats">
+
+          <ExecutiveStats />
+
+        </ErrorBoundary>
 
       </section>
 
@@ -31,7 +36,11 @@ const DashboardShell = (): JSX.Element => {
 
       <section className="pix-section">
 
-        <TeamDirectory />
+        <ErrorBoundary label="Team Directory">
+
+          <TeamDirectory />
+
+        </ErrorBoundary>
 
       </section>
 
@@ -41,7 +50,11 @@ const DashboardShell = (): JSX.Element => {
 
       <section className="pix-section">
 
-        <ActionsTable />
+        <ErrorBoundary label="Actions">
+
+          <ActionsTable />
+
+        </ErrorBoundary>
 
       </section>
 
@@ -51,7 +64,11 @@ const DashboardShell = (): JSX.Element => {
 
       <section className="pix-section">
 
-        <AgendaPanel />
+        <ErrorBoundary label="Agenda">
+
+          <AgendaPanel />
+
+        </ErrorBoundary>
 
       </section>
 
@@ -63,13 +80,21 @@ const DashboardShell = (): JSX.Element => {
 
         <div className="col-span-12 xl:col-span-6">
 
-          <DocumentsPanel />
+          <ErrorBoundary label="Documents">
+
+            <DocumentsPanel />
+
+          </ErrorBoundary>
 
         </div>
 
         <div className="col-span-12 xl:col-span-6">
 
-          <SponsorsPanel />
+          <ErrorBoundary label="Sponsors">
+
+            <SponsorsPanel />
+
+          </ErrorBoundary>
 
         </div>
 

@@ -1,6 +1,82 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
+
+import { heroConfig } from "../../config/heroConfig";
+import { EventSettingsService } from "../../services/eventSettings.service";
 
 const Footer = (): JSX.Element => {
+
+  const [eventDateISO, setEventDateISO] =
+    useState(heroConfig.eventDateISO);
+
+  const [lastRefreshed, setLastRefreshed] =
+    useState(new Date());
+
+  /* ======================================================
+     LOAD EVENT DATE (kept in sync with the hero banner)
+  ====================================================== */
+
+  useEffect(() => {
+
+    const loadSettings = async (): Promise<void> => {
+
+      const settings =
+        await EventSettingsService.getSettings();
+
+      if (settings && settings.EventDate) {
+        setEventDateISO(settings.EventDate);
+      }
+    };
+
+    void loadSettings();
+
+  }, []);
+
+  /* ======================================================
+     LIVE "LAST REFRESHED" CLOCK
+  ====================================================== */
+
+  useEffect(() => {
+
+    const timer = setInterval(() => {
+
+      setLastRefreshed(new Date());
+
+    }, 1000);
+
+    return () => clearInterval(timer);
+
+  }, []);
+
+  const formattedEventDate = (() => {
+
+    const parsed = new Date(eventDateISO);
+
+    if (isNaN(parsed.getTime())) {
+      return heroConfig.eventDate;
+    }
+
+    return new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      }
+    ).format(parsed);
+
+  })();
+
+  const formattedRefreshTime =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      }
+    ).format(lastRefreshed);
 
   return (
 
@@ -25,7 +101,8 @@ const Footer = (): JSX.Element => {
         <div className="pix-footer__title">
 
           Ports Innovation Exchange · Breaking The Mould ·
-          8 Oct 2026 · Malta
+          {" "}
+          {formattedEventDate} · Malta
 
         </div>
 
@@ -57,7 +134,7 @@ const Footer = (): JSX.Element => {
 
             Last refreshed:
             {" "}
-            9:22:52 AM
+            {formattedRefreshTime}
 
           </div>
 

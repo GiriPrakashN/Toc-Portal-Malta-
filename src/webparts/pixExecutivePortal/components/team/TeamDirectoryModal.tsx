@@ -13,6 +13,11 @@ import {
   ITeamRegion,
 } from "../../models/ITeamRegion";
 
+import {
+  formatTimeSafe,
+  formatDateSafe
+} from "../../utils/timezoneFormat";
+
 /* =========================================================
    PROPS
 ========================================================= */
@@ -40,43 +45,18 @@ const TeamDirectoryModal = ({
 }: ITeamDirectoryModalProps): JSX.Element | null => {
 
   /* ======================================================
-     FORMAT TIME
+     FORMAT TIME / DATE (crash-proof)
   ====================================================== */
 
   const formatTime = (
     timezone: string
-  ): string => {
-
-    return new Intl.DateTimeFormat(
-      "en-GB",
-      {
-        timeZone: timezone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      }
-    ).format(now);
-  };
-
-  /* ======================================================
-     FORMAT DATE
-  ====================================================== */
+  ): string =>
+    formatTimeSafe(timezone, now);
 
   const formatDate = (
     timezone: string
-  ): string => {
-
-    return new Intl.DateTimeFormat(
-      "en-GB",
-      {
-        timeZone: timezone,
-        weekday: "short",
-        day: "2-digit",
-        month: "short",
-      }
-    ).format(now);
-  };
+  ): string =>
+    formatDateSafe(timezone, now);
 
   /* ======================================================
      KPI VALUES
@@ -304,16 +284,32 @@ const TeamDirectoryModal = ({
 
                   {region.members.map((member) => (
 
-                    <div
-                      key={member}
-                      className="
-                        pix-team-modal-member
-                      "
-                    >
+                    member.email ? (
 
-                      {member}
+                      <a
+                        key={member.name}
+                        href={`mailto:${member.email}`}
+                        className="pix-team-modal-member"
+                        title={member.email}
+                      >
 
-                    </div>
+                        {member.name}
+
+                      </a>
+
+                    ) : (
+
+                      <div
+                        key={member.name}
+                        className="
+                          pix-team-modal-member
+                        "
+                      >
+
+                        {member.name}
+
+                      </div>
+                    )
 
                   ))}
 

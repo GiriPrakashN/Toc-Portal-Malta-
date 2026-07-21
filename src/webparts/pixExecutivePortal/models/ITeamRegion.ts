@@ -1,3 +1,10 @@
+export interface ITeamMember {
+
+  name: string;
+
+  email?: string;
+}
+
 export interface ITeamRegion {
 
   id: number;
@@ -12,7 +19,7 @@ export interface ITeamRegion {
 
   accent: "cyan" | "lime" | "amber" | "red";
 
-  members: string[];
+  members: ITeamMember[];
 
   displayOrder: number;
 

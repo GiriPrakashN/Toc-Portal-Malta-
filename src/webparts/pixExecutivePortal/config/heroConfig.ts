@@ -10,10 +10,10 @@ export const heroConfig = {
     "MALTA",
 
   eventDate:
-    "8TH OCTOBER 2026",
+    "25TH FEBRUARY 2026",
 
   eventDateISO:
-    "2026-10-08T09:00:00",
+    "2026-02-25T09:00:00",
 
   heroTitleLine1:
     "BREAKING",
@@ -28,7 +28,7 @@ export const heroConfig = {
     "ONE DAY",
 
   description:
-    "Where the most powerful voices in the industry come together to actively shape the economic and political future of global trade. Welcome back, Giri.",
+    "Where the most powerful voices in the industry come together to actively shape the economic and political future of global trade. Welcome back.",
 
   verticalLabel:
     "COUNTDOWN TO OPENING",

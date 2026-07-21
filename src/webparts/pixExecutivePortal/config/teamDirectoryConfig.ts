@@ -13,8 +13,8 @@ export const teamDirectoryConfig = {
     true,
 
   enableMembers:
-    false,
+    true,
 
   maxRegions:
-    4,
+    6,
 };

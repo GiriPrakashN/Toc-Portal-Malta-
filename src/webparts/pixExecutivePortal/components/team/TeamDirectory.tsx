@@ -19,13 +19,21 @@ import {
 import TeamDirectoryModal
 from "./TeamDirectoryModal";
 
+import {
+  formatTimeSafe,
+  formatDateSafe
+} from "../../utils/timezoneFormat";
+
 const TeamDirectory = (): JSX.Element => {
 
   const [regions, setRegions] =
     useState<ITeamRegion[]>([]);
 
-  const dashboardRegions =
-    regions.slice(0, 4);
+  /* All active regions are shown in the dashboard row
+     (currently 6). TeamDirectoryService already returns
+     them pre-sorted alphabetically by city. */
+  const dashboardRegions = regions;
+
   const [now, setNow] =
     useState(new Date());
 
@@ -47,7 +55,7 @@ const TeamDirectory = (): JSX.Element => {
       setRegions(response);
     };
 
-    loadRegions();
+    void loadRegions();
 
   }, []);
 
@@ -69,43 +77,19 @@ const TeamDirectory = (): JSX.Element => {
   }, []);
 
   /* ======================================================
-     FORMAT TIME
+     FORMAT TIME / DATE (crash-proof: falls back instead
+     of throwing if a region's Timezone value is invalid)
   ====================================================== */
 
   const formatTime = (
     timezone: string
-  ): string => {
-
-    return new Intl.DateTimeFormat(
-      "en-GB",
-      {
-        timeZone: timezone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      }
-    ).format(now);
-  };
-
-  /* ======================================================
-     FORMAT DATE
-  ====================================================== */
+  ): string =>
+    formatTimeSafe(timezone, now);
 
   const formatDate = (
     timezone: string
-  ): string => {
-
-    return new Intl.DateTimeFormat(
-      "en-GB",
-      {
-        timeZone: timezone,
-        weekday: "short",
-        day: "2-digit",
-        month: "short",
-      }
-    ).format(now);
-  };
+  ): string =>
+    formatDateSafe(timezone, now);
 
   return (
 
@@ -208,12 +192,40 @@ const TeamDirectory = (): JSX.Element => {
   <strong>
     {region.members.length}
     {" "}
-    team members
+    team {region.members.length === 1 ? "member" : "members"}
   </strong>
 
-  {" · "}
+  {region.members.length > 0 && (
 
-  {region.members.join(", ")}
+    <div className="pix-team-card__members-list">
+
+      {region.members.map((member) => (
+
+        member.email ? (
+
+          <a
+            key={member.name}
+            href={`mailto:${member.email}`}
+            className="pix-team-card__member-link"
+            title={member.email}
+          >
+            {member.name}
+          </a>
+
+        ) : (
+
+          <span
+            key={member.name}
+            className="pix-team-card__member-link pix-team-card__member-link--plain"
+          >
+            {member.name}
+          </span>
+        )
+
+      ))}
+
+    </div>
+  )}
 
 </div>
 

@@ -162,10 +162,10 @@
     grid;
 
   grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+    repeat(6, minmax(0, 1fr));
 
   gap:
-    16px;
+    12px;
 }
 
 /* =========================================================
@@ -181,10 +181,10 @@
     hidden;
 
   min-height:
-    198px;
+    186px;
 
   padding:
-    14px 16px 14px;
+    12px 12px 12px;
 
   border-radius:
     14px;
@@ -275,7 +275,7 @@
     #111111;
 
   font-size:
-    12px;
+    11px;
 
   font-weight:
     900;
@@ -291,13 +291,13 @@
 .pix-team-card__city {
 
   margin-top:
-    10px;
+    8px;
 
   color:
     #09090b;
 
   font-size:
-    16px;
+    14px;
 
   line-height:
     1.2;
@@ -307,6 +307,9 @@
 
   text-transform:
     uppercase;
+
+  overflow-wrap:
+    break-word;
 }
 
 /* =========================================================
@@ -322,10 +325,13 @@
     #666666;
 
   font-size:
-    11px;
+    10px;
 
   line-height:
-    1.45;
+    1.4;
+
+  overflow-wrap:
+    break-word;
 }
 
 /* =========================================================
@@ -335,13 +341,13 @@
 .pix-team-card__clock {
 
   margin-top:
-    18px;
+    14px;
 
   color:
     #111111;
 
   font-size:
-    22px;
+    18px;
 
   line-height:
     1;
@@ -357,13 +363,13 @@
 .pix-team-card__date {
 
   margin-top:
-    8px;
+    6px;
 
   color:
     #666666;
 
   font-size:
-    11px;
+    10px;
 }
 
 /* =========================================================
@@ -373,10 +379,10 @@
 .pix-team-card__members {
 
   margin-top:
-    14px;
+    12px;
 
   padding-top:
-    12px;
+    10px;
 
   border-top:
     1px solid rgba(15,23,42,0.06);
@@ -385,7 +391,7 @@
     #555555;
 
   font-size:
-    11px;
+    10px;
 
   line-height:
     1.5;
@@ -393,15 +399,88 @@
 
 .pix-team-card__members strong {
 
+  display:
+    block;
+
   color:
     #111111;
+
+  font-size:
+    10px;
+
+  margin-bottom:
+    6px;
+}
+
+/* =========================================================
+   MEMBER LINKS (dashboard card)
+   ========================================================= */
+
+.pix-team-card__members-list {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    4px;
+}
+
+.pix-team-card__member-link {
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  color:
+    #1f6feb;
+
+  font-size:
+    11px;
+
+  font-weight:
+    600;
+
+  text-decoration:
+    none;
+}
+
+.pix-team-card__member-link:hover {
+
+  text-decoration:
+    underline;
+}
+
+.pix-team-card__member-link--plain {
+
+  color:
+    #333333;
+
+  cursor:
+    default;
 }
 
 /* =========================================================
    RESPONSIVE
    ========================================================= */
 
-@media (max-width: 1280px) {
+@media (max-width: 1180px) {
+
+  .pix-team-directory__grid {
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
 
   .pix-team-directory__grid {
 
@@ -410,7 +489,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 560px) {
 
   .pix-team-directory__grid {
 
